@@ -1,4 +1,4 @@
-const {firebase, database} = require("./../config/firebase");
+const { firebase } = require("./../config/firebase");
 
 exports.register = (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.name) {
@@ -8,7 +8,6 @@ exports.register = (req, res) => {
       password: "password is required",
     });
   }
-
 
   const isGoogleEmail = req.body.email.endsWith("@gmail.com") || req.body.email.endsWith("@googlemail.com");
   if (!isGoogleEmail) {
@@ -25,17 +24,12 @@ exports.register = (req, res) => {
       const uid = userData.user.uid;
       const name = req.body.name;
       const email = req.body.email;
-      const password = req.body.password;
 
-      // Save user name in Realtime Database
+      // Update displayName in Firebase Authentication
       firebase
-        .database()
-        .ref("users/" + uid)
-        .set({
-          name: name,
-          email: email,
-          password: password,
-          uid: uid,
+        .auth()
+        .currentUser.updateProfile({
+          displayName: name,
         })
         .then(() => {
           // Send email verification
@@ -64,7 +58,6 @@ exports.register = (req, res) => {
     });
 };
 
-// signin
 exports.login = (req, res) => {
   if (!req.body.email || !req.body.password) {
     return res.status(422).json({
@@ -81,14 +74,20 @@ exports.login = (req, res) => {
         return res.status(401).json({ error: "Email not verified. Please verify your email first." });
       }
 
+      // Simpan data pengguna yang berhasil masuk ke Firebase Database
       const uid = user.uid;
-      const newPassword = req.body.password;
+      const name = user.displayName;
+      const email = user.email;
 
-      // Update password in Realtime Database
+      // Simpan data pengguna ke Firebase Database
       firebase
         .database()
         .ref("users/" + uid)
-        .update({ password: newPassword })
+        .set({
+          name: name,
+          email: email,
+          uid: uid,
+        })
         .then(() => {
           return res.status(200).json(user);
         })
@@ -107,8 +106,6 @@ exports.login = (req, res) => {
     });
 };
 
-
-// forget password
 exports.forgetPassword = (req, res) => {
   if (!req.body.email) {
     return res.status(422).json({ email: "email is required" });
@@ -131,13 +128,13 @@ exports.forgetPassword = (req, res) => {
 };
 
 exports.getRegisteredUid = () => {
-  // Pastikan Anda sudah login sebelumnya
-const user = firebase.auth().currentUser;
-if (user) {
-  const uid = user.uid;
-  console.log('UID:', uid);
-} else {
-  console.log('Pengguna belum login.');
-}
-
+  // Pastikan pengguna sudah login sebelumnya
+  const user = firebase.auth().currentUser;
+  if (user) {
+    const uid = user.uid;
+    return uid; // Mengembalikan UID pengguna
+  } else {
+    console.log("Pengguna belum login.");
+    return null; // Mengembalikan null jika pengguna belum login
+  }
 };

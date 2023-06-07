@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
 const app = express();
 
 app.get('/', (req, res) => {
@@ -9,15 +8,16 @@ app.get('/', (req, res) => {
 
 // Routes
 const authRoutes = require("./routes/auth");
-const uploadRoutes = require("./routes/imageProfil");
+const updateProfile = require("./routes/profile");
 const communityRoutes = require('./routes/communityRoute');
 
 // Middlewares
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 // Routes
 app.use("/api", authRoutes);
-app.use("/api", uploadRoutes);
+app.use("/api", updateProfile);
 app.use('/api/community', communityRoutes);
 
 
@@ -26,7 +26,8 @@ app.use('/api/community', communityRoutes);
 // Starting a server
 const server = app.listen(process.env.PORT || 8080, () => {
   const host =server.address().address;
-  const port = server.address.port;
+  const port = server.
+  address.port;
 
   console.log ("Runing on port 8080");
 });

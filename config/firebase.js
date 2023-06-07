@@ -5,17 +5,14 @@ require('firebase/database');
 
 // Add Firebase SDK Snippet
 const firebaseConfig = {
-  apiKey: "AIzaSyDJgl3xKB4TsYEm2MiFuWSpsrSCXO5D0oY",
-  authDomain: "andireski-110103.firebaseapp.com",
-  projectId: "andireski-110103",
-  databaseURL : "https://andireski-110103-default-rtdb.firebaseio.com",
-  storageBucket: "andireski-110103.appspot.com",
-  messagingSenderId: "370541913030",
-  appId: "1:370541913030:web:14c48531b76feb28e588c7",
-  measurementId: "G-GZSJH2K8WS"
+  apiKey: "AIzaSyAmTvMWmj_NtbzeU5JGVke08VcPgoMoxAM",
+  authDomain: "c-project-387808.firebaseapp.com",
+  projectId: "c-project-387808",
+  databaseURL : "https://c-project-387808-default-rtdb.asia-southeast1.firebasedatabase.app",
+  storageBucket: "c-project-387808.appspot.com",
+  messagingSenderId: "66950882895",
+  appId: "1:66950882895:web:cb20b79f2ec4e25606ac3a"
 };
-
-
 
 
 firebase.initializeApp(firebaseConfig);

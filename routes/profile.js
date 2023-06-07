@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const uploadController = require("../controllers/imageProfil");
+const Profile = require("../controllers/profile");
 
 const multerUpload = multer({
   storage: multer.memoryStorage(),
@@ -10,8 +10,8 @@ const multerUpload = multer({
   },
 });
 
-router.post("/uploadProfil", multerUpload.single("file"), (req, res) => {
-    uploadController.uploadImage(req, res);
+router.post("/updateProfile", multerUpload.single("file"), (req, res) => {
+  Profile.updateProfile(req, res);
 });
 
 module.exports = router;
