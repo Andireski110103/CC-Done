@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const apiDocumentation = require('./rubistApi.json');
+app.use('/rubistApi-docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
+
 
 app.get('/', (req, res) => {
   res.send("API Aktif, hehe");
